@@ -1,17 +1,39 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState, type ComponentPropsWithoutRef, type PropsWithChildren } from 'react'
 import { Container } from './components/Container'
 import { FloatingWhatsApp } from './components/FloatingWhatsApp'
 import { site, whatsappLink } from './content/site'
 
-type Service = { name: string; description: string; image?: string }
+type ServiceImage = { mobile: string; desktop: string }
+type Service = { name: string; description: string; image?: ServiceImage }
+
+function Reveal({ children, className = '', ...props }: PropsWithChildren<ComponentPropsWithoutRef<'div'>>) {
+  const element = useRef<HTMLDivElement>(null)
+  const [isVisible, setIsVisible] = useState(false)
+
+  useEffect(() => {
+    const target = element.current
+    if (!target) return
+
+    const observer = new IntersectionObserver(([entry]) => {
+      if (!entry.isIntersecting) return
+      setIsVisible(true)
+      observer.unobserve(target)
+    }, { threshold: 0.12, rootMargin: '0px 0px -24px' })
+
+    observer.observe(target)
+    return () => observer.disconnect()
+  }, [])
+
+  return <div {...props} className={`reveal ${isVisible ? 'is-visible' : ''} ${className}`} ref={element}>{children}</div>
+}
 
 const featuredServices: Service[] = [
-  { name: 'Botox', description: 'Aplicación de toxina botulínica para suavizar líneas de expresión en frente, entrecejo y contorno de ojos.', image: '/images/services/botox-v2.png' },
-  { name: 'Relleno de labios', description: 'Aplicación de ácido hialurónico para aportar definición, volumen o hidratación a los labios.', image: '/images/services/relleno-labios.png' },
-  { name: 'Rinomodelación', description: 'Perfilado nasal sin cirugía con ácido hialurónico para armonizar el contorno y los ángulos de la nariz.', image: '/images/services/rinomodelacion-v3.png' },
-  { name: 'HIFU', description: 'Tecnología de ultrasonido focalizado utilizada en protocolos de tensado facial y corporal.', image: '/images/services/hifu.png' },
-  { name: 'Maderoterapia', description: 'Masaje corporal con instrumentos de madera que acompaña protocolos de modelado y bienestar.', image: '/images/services/maderoterapia-v2.png' },
-  { name: 'Masajes reductores', description: 'Masaje manual focalizado en zonas corporales, integrado a protocolos de modelado corporal.', image: '/images/services/masajes-reductores.png' },
+  { name: 'Botox', description: 'Aplicación de toxina botulínica para suavizar líneas de expresión en frente, entrecejo y contorno de ojos.', image: { mobile: '/images/services/botox-card-640.webp', desktop: '/images/services/botox-card-960.webp' } },
+  { name: 'Relleno de labios', description: 'Aplicación de ácido hialurónico para aportar definición, volumen o hidratación a los labios.', image: { mobile: '/images/services/relleno-labios-card-640.webp', desktop: '/images/services/relleno-labios-card-960.webp' } },
+  { name: 'Rinomodelación', description: 'Perfilado nasal sin cirugía con ácido hialurónico para armonizar el contorno y los ángulos de la nariz.', image: { mobile: '/images/services/rinomodelacion-card-640.webp', desktop: '/images/services/rinomodelacion-card-960.webp' } },
+  { name: 'HIFU', description: 'Tecnología de ultrasonido focalizado utilizada en protocolos de tensado facial y corporal.', image: { mobile: '/images/services/hifu-card-640.webp', desktop: '/images/services/hifu-card-960.webp' } },
+  { name: 'Maderoterapia', description: 'Masaje corporal con instrumentos de madera que acompaña protocolos de modelado y bienestar.', image: { mobile: '/images/services/maderoterapia-card-640.webp', desktop: '/images/services/maderoterapia-card-960.webp' } },
+  { name: 'Masajes reductores', description: 'Masaje manual focalizado en zonas corporales, integrado a protocolos de modelado corporal.', image: { mobile: '/images/services/masajes-reductores-card-640.webp', desktop: '/images/services/masajes-reductores-card-960.webp' } },
 ]
 
 const reviews = [
@@ -127,30 +149,30 @@ function Footer() {
 }
 
 function ServiceCard({ service, image = false }: { service: Service; image?: boolean }) {
-  return <article className={`service-card ${image ? 'service-card-image' : ''}`}>
-    {image && service.image && <img alt={`${service.name} en KUPER Medicina Estética`} loading="lazy" src={service.image} />}
+  return <Reveal className="service-reveal"><article className={`service-card ${image ? 'service-card-image' : ''}`}>
+    {image && service.image && <picture><source media="(max-width: 639px)" srcSet={service.image.mobile} /><img alt={`${service.name} en KUPER Medicina Estética`} decoding="async" height="696" loading="lazy" src={service.image.desktop} width="960" /></picture>}
     <div className="service-card-content"><h3>{service.name}</h3><p>{service.description}</p><a href={consult(service.name)} rel="noreferrer" target="_blank">Consultar por WhatsApp <Arrow /></a></div>
-  </article>
+  </article></Reveal>
 }
 
 function Home() {
   return <>
     <main>
-      <section className="hero" id="inicio"><img alt="" className="hero-background" src="/images/generated/hero-botanical.png" /><Container><div className="hero-grid"><div className="hero-copy"><h1>Cuidamos tu bienestar y tu imagen, empezando por escucharte.</h1><p className="hero-text">En KUPER te orientamos para encontrar la alternativa que mejor se adapte a vos y a lo que buscás.</p><p className="hero-credential">Dra. Eve Kuperstein · MP 37758</p><div className="hero-actions"><a className="button button-primary" href={site.primaryAction.href} rel="noreferrer" target="_blank">Consultar por WhatsApp <Arrow /></a><a className="button button-secondary" href="#servicios">Ver servicios</a></div></div></div></Container></section>
+      <section className="hero" id="inicio"><img alt="" className="hero-background" src="/images/generated/hero-botanical.png" /><Container><div className="hero-grid"><Reveal className="hero-copy"><h1>Cuidamos tu bienestar y tu imagen, empezando por escucharte.</h1><p className="hero-text">En KUPER te orientamos para encontrar la alternativa que mejor se adapte a vos y a lo que buscás.</p><p className="hero-credential">Dra. Eve Kuperstein · MP 37758</p><div className="hero-actions"><a className="button button-primary" href={site.primaryAction.href} rel="noreferrer" target="_blank">Consultar por WhatsApp <Arrow /></a><a className="button button-secondary" href="#servicios">Ver servicios</a></div></Reveal></div></Container></section>
 
-      <section className="section services-preview" id="servicios"><Container><div className="section-intro"><div><h2>Servicios para acompañar tus objetivos.</h2><p>Conocé algunas de las alternativas disponibles en KUPER. Cada consulta se orienta de forma personalizada.</p></div><a className="text-link desktop-only" href="/servicios">Ver todos los servicios <Arrow /></a></div><div className="featured-grid">{featuredServices.map((service) => <ServiceCard image key={service.name} service={service} />)}</div><div className="mobile-center"><a className="button button-secondary" href="/servicios">Ver todos los servicios <Arrow /></a></div></Container></section>
+      <section className="section services-preview" id="servicios"><Container><Reveal className="section-intro"><div><h2>Servicios para acompañar tus objetivos.</h2><p>Conocé algunas de las alternativas disponibles en KUPER. Cada consulta se orienta de forma personalizada.</p></div><a className="text-link desktop-only" href="/servicios">Ver todos los servicios <Arrow /></a></Reveal><div className="featured-grid">{featuredServices.map((service) => <ServiceCard image key={service.name} service={service} />)}</div><Reveal className="mobile-center"><a className="button button-secondary" href="/servicios">Ver todos los servicios <Arrow /></a></Reveal></Container></section>
 
-      <section className="section care-section" id="nosotros"><Container><div className="care-grid"><div className="care-images"><img alt="Recepción de KUPER Medicina Estética" src="/images/clinic/reception.jpg" /><img alt="Identidad visual de KUPER Medicina Estética en la clínica" src="/images/clinic/logo-wall.jpg" /></div><div className="care-copy"><h2>Una experiencia pensada para que te sientas bien atendida.</h2><p>La Dra. Eve Kuperstein y el equipo de KUPER acompañan cada consulta con una mirada profesional, cercana y detallista.</p><ul><li><Check /><span>Valoración profesional antes de avanzar.</span></li><li><Check /><span>Alternativas faciales, corporales y de bienestar.</span></li><li><Check /><span>Atención en Córdoba Capital.</span></li></ul><a className="button button-primary care-button" href={site.primaryAction.href} rel="noreferrer" target="_blank">Hacer una consulta <Arrow /></a></div></div></Container></section>
+      <section className="section care-section" id="nosotros"><Container><div className="care-grid"><Reveal className="care-images"><img alt="Recepción de KUPER Medicina Estética" loading="lazy" src="/images/clinic/reception.jpg" /><img alt="Identidad visual de KUPER Medicina Estética en la clínica" loading="lazy" src="/images/clinic/logo-wall.jpg" /></Reveal><Reveal className="care-copy"><h2>Una experiencia pensada para que te sientas bien atendida.</h2><p>La Dra. Eve Kuperstein y el equipo de KUPER acompañan cada consulta con una mirada profesional, cercana y detallista.</p><ul><li><Check /><span>Valoración profesional antes de avanzar.</span></li><li><Check /><span>Alternativas faciales, corporales y de bienestar.</span></li><li><Check /><span>Atención en Córdoba Capital.</span></li></ul><a className="button button-primary care-button" href={site.primaryAction.href} rel="noreferrer" target="_blank">Hacer una consulta <Arrow /></a></Reveal></div></Container></section>
 
-      <section className="section reviews-section" id="opiniones"><Container><div className="reviews-heading"><div><h2>Lo cuentan quienes ya eligieron KUPER.</h2><p>Opiniones reales de pacientes en Google.</p></div><div className="reviews-summary"><strong>5,0</strong><span aria-label="Cinco estrellas">★★★★★</span><small>251 opiniones en Google</small></div></div><div className="review-marquee" aria-label="Reseñas de pacientes"><div className="review-track">{[0, 1].map((set) => <div className="review-set" key={set}>{reviews.map((review) => <article className="review-card" key={`${set}-${review.name}`}><div className="review-card-top"><span className="review-avatar">{review.name.slice(0, 1)}</span><div><h3>{review.name}</h3><p className="review-stars" aria-label="Cinco estrellas">★★★★★ <span>{review.when}</span></p></div></div><blockquote>“{review.text}”</blockquote></article>)}</div>)}</div></div><div className="review-cta"><a className="button button-secondary" href={site.contact.reviewsUrl} rel="noreferrer" target="_blank">Ver todas las opiniones en Google <Arrow /></a></div></Container></section>
+      <section className="section reviews-section" id="opiniones"><Container><Reveal className="reviews-heading"><div><h2>Lo cuentan quienes ya eligieron KUPER.</h2><p>Opiniones reales de pacientes en Google.</p></div><div className="reviews-summary"><strong>5,0</strong><span aria-label="Cinco estrellas">★★★★★</span><small>251 opiniones en Google</small></div></Reveal><Reveal className="review-marquee" aria-label="Reseñas de pacientes"><div className="review-track">{[0, 1].map((set) => <div className="review-set" key={set}>{reviews.map((review) => <article className="review-card" key={`${set}-${review.name}`}><div className="review-card-top"><span className="review-avatar">{review.name.slice(0, 1)}</span><div><h3>{review.name}</h3><p className="review-stars" aria-label="Cinco estrellas">★★★★★ <span>{review.when}</span></p></div></div><blockquote>“{review.text}”</blockquote></article>)}</div>)}</div></Reveal><Reveal className="review-cta"><a className="button button-secondary" href={site.contact.reviewsUrl} rel="noreferrer" target="_blank">Ver todas las opiniones en Google <Arrow /></a></Reveal></Container></section>
 
-      <section className="section contact-section" id="contacto"><Container><div className="contact-card"><div><h2>¿Querés hacer una consulta?</h2><p>Escribinos por WhatsApp para conversar sobre el servicio que te interesa y coordinar tu atención.</p></div><div className="contact-actions"><a className="button button-light" href={site.primaryAction.href} rel="noreferrer" target="_blank">Consultar por WhatsApp <Arrow /></a><a className="contact-phone" href={site.contact.phoneHref}>{site.contact.phone}</a></div></div></Container></section>
+      <section className="section contact-section" id="contacto"><Container><Reveal className="contact-card"><div><h2>¿Querés hacer una consulta?</h2><p>Escribinos por WhatsApp para conversar sobre el servicio que te interesa y coordinar tu atención.</p></div><div className="contact-actions"><a className="button button-light" href={site.primaryAction.href} rel="noreferrer" target="_blank">Consultar por WhatsApp <Arrow /></a><a className="contact-phone" href={site.contact.phoneHref}>{site.contact.phone}</a></div></Reveal></Container></section>
     </main>
   </>
 }
 
 function ServicesPage() {
-  return <main><section className="services-hero"><Container><a className="back-link" href="/"><Arrow /> Volver al inicio</a><h1>Todos los servicios.</h1><p>Elegí la alternativa que te interesa y escribinos. La orientación y la planificación se definen de forma personalizada.</p></Container></section><section className="all-services"><Container>{serviceGroups.map((group) => <section className="service-group" key={group.title}><h2>{group.title}</h2><div className="all-services-grid">{group.services.map((service) => <ServiceCard key={service.name} service={service} />)}</div></section>)}</Container></section><section className="services-cta"><Container><div><h2>¿No encontrás lo que buscás?</h2><p>Escribinos y te orientamos.</p><a className="button button-light" href={site.primaryAction.href} rel="noreferrer" target="_blank">Hablar por WhatsApp <Arrow /></a></div></Container></section></main>
+  return <main><section className="services-hero"><Container><Reveal><a className="back-link" href="/"><Arrow /> Volver al inicio</a><h1>Todos los servicios.</h1><p>Elegí la alternativa que te interesa y escribinos. La orientación y la planificación se definen de forma personalizada.</p></Reveal></Container></section><section className="all-services"><Container>{serviceGroups.map((group) => <Reveal className="service-group" key={group.title}><section><h2>{group.title}</h2><div className="all-services-grid">{group.services.map((service) => <ServiceCard key={service.name} service={service} />)}</div></section></Reveal>)}</Container></section><section className="services-cta"><Container><Reveal><div><h2>¿No encontrás lo que buscás?</h2><p>Escribinos y te orientamos.</p><a className="button button-light" href={site.primaryAction.href} rel="noreferrer" target="_blank">Hablar por WhatsApp <Arrow /></a></div></Reveal></Container></section></main>
 }
 
 function SocialCard() {
