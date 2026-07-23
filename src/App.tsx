@@ -7,7 +7,7 @@ type Service = { name: string; description: string; image?: string }
 const featuredServices: Service[] = [
   { name: 'Botox', description: 'Una alternativa de medicina estética que se conversa y evalúa según cada caso.', image: '/images/services/botox-v2.png' },
   { name: 'Relleno de labios', description: 'Un procedimiento que se planifica de manera personalizada luego de una valoración profesional.', image: '/images/services/relleno-labios.png' },
-  { name: 'Rinomodelación', description: 'Una opción de perfilado nasal sin cirugía que requiere evaluación individual.', image: '/images/services/rinomodelacion.png' },
+  { name: 'Rinomodelación', description: 'Una opción de perfilado nasal sin cirugía que requiere evaluación individual.', image: '/images/services/rinomodelacion-v3.png' },
   { name: 'HIFU', description: 'Tecnología disponible en la clínica; su indicación se define en consulta.', image: '/images/services/hifu.png' },
   { name: 'Maderoterapia', description: 'Técnica corporal realizada con elementos de madera y planificada para cada persona.', image: '/images/services/maderoterapia-v2.png' },
   { name: 'Masajes reductores', description: 'Sesiones corporales cuya planificación se conversa de manera personalizada.', image: '/images/services/masajes-reductores.png' },
@@ -86,7 +86,7 @@ function Check() { return <svg aria-hidden="true" viewBox="0 0 20 20"><path d="m
 
 function Header() {
   return <header className="site-header"><Container><div className="header-inner">
-    <a className="brand" href="/" aria-label="KUPER Medicina Estética, inicio"><img alt="" src="/images/brand/logo-white.png" /><span><strong>KUPER</strong><small>medicina estética</small></span></a>
+    <a className="brand" href="/" aria-label="KUPER Medicina Estética, inicio"><img alt="KUPER Medicina Estética" src="/images/brand/logo-white.png" /></a>
     <nav className="desktop-nav" aria-label="Navegación principal">{site.navigation.map((item) => <a href={item.href} key={item.href}>{item.label}</a>)}</nav>
     <a className="button button-primary header-cta" href={site.primaryAction.href} rel="noreferrer" target="_blank">WhatsApp</a>
   </div></Container></header>
@@ -110,7 +110,7 @@ function ServiceCard({ service, image = false }: { service: Service; image?: boo
 function Home() {
   return <>
     <main>
-      <section className="hero" id="inicio"><Container><div className="hero-grid"><div className="hero-copy"><p className="hero-kicker">Dra. Eve Kuperstein · MP 37758</p><h1>Medicina estética, bienestar y atención cercana.</h1><p className="hero-text">Un espacio en Córdoba para conversar sobre lo que buscás y encontrar la alternativa adecuada para vos.</p><div className="hero-actions"><a className="button button-primary" href={site.primaryAction.href} rel="noreferrer" target="_blank">Consultar por WhatsApp <Arrow /></a><a className="button button-secondary" href="#servicios">Ver servicios</a></div></div><div className="hero-art"><img alt="Composición botánica en tonos celestes" src="/images/generated/hero-botanical.png" /></div></div></Container></section>
+      <section className="hero" id="inicio"><img alt="" className="hero-background" src="/images/generated/hero-botanical.png" /><Container><div className="hero-grid"><div className="hero-copy"><h1>Cuidamos tu bienestar y tu imagen, empezando por escucharte.</h1><p className="hero-text">En KUPER te orientamos para encontrar la alternativa que mejor se adapte a vos y a lo que buscás.</p><p className="hero-credential">Dra. Eve Kuperstein · MP 37758</p><div className="hero-actions"><a className="button button-primary" href={site.primaryAction.href} rel="noreferrer" target="_blank">Consultar por WhatsApp <Arrow /></a><a className="button button-secondary" href="#servicios">Ver servicios</a></div></div></div></Container></section>
 
       <section className="section services-preview" id="servicios"><Container><div className="section-intro"><div><h2>Servicios para acompañar tus objetivos.</h2><p>Conocé algunas de las alternativas disponibles en KUPER. Cada consulta se orienta de forma personalizada.</p></div><a className="text-link desktop-only" href="/servicios">Ver todos los servicios <Arrow /></a></div><div className="featured-grid">{featuredServices.map((service) => <ServiceCard image key={service.name} service={service} />)}</div><div className="mobile-center"><a className="button button-secondary" href="/servicios">Ver todos los servicios <Arrow /></a></div></Container></section>
 
@@ -127,7 +127,13 @@ function ServicesPage() {
   return <main><section className="services-hero"><Container><a className="back-link" href="/"><Arrow /> Volver al inicio</a><h1>Todos los servicios.</h1><p>Elegí la alternativa que te interesa y escribinos. La orientación y la planificación se definen de forma personalizada.</p></Container></section><section className="all-services"><Container>{serviceGroups.map((group) => <section className="service-group" key={group.title}><h2>{group.title}</h2><div className="all-services-grid">{group.services.map((service) => <ServiceCard key={service.name} service={service} />)}</div></section>)}</Container></section><section className="services-cta"><Container><div><h2>¿No encontrás lo que buscás?</h2><p>Escribinos y te orientamos.</p><a className="button button-light" href={site.primaryAction.href} rel="noreferrer" target="_blank">Hablar por WhatsApp <Arrow /></a></div></Container></section></main>
 }
 
+function SocialCard() {
+  return <main className="social-card"><img alt="" className="social-card-bg" src="/images/generated/hero-botanical.png" /><div className="social-card-wash" /><div className="social-card-content"><img alt="KUPER Medicina Estética" src="/images/brand/logo-white.png" /><p>Medicina estética y bienestar en Córdoba Capital</p></div></main>
+}
+
 export default function App() {
-  const isServicesPage = window.location.pathname.replace(/\/+$/, '') === '/servicios'
+  const path = window.location.pathname.replace(/\/+$/, '')
+  if (path === '/social-card') return <SocialCard />
+  const isServicesPage = path === '/servicios'
   return <div className="min-h-screen bg-paper text-ink"><Header />{isServicesPage ? <ServicesPage /> : <Home />}<Footer /><FloatingWhatsApp href={site.contact.whatsappUrl} /></div>
 }
