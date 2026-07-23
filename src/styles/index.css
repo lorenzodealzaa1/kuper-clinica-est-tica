@@ -27,8 +27,8 @@ h1, h2, h3, p { margin: 0; }
   .header-cta { @apply hidden min-h-9 px-4 text-xs md:inline-flex; }
   .nav-toggle { @apply inline-flex h-10 w-10 flex-col items-center justify-center gap-[5px] border-0 bg-transparent p-0 text-[#334849] outline-none md:hidden; }
   .nav-toggle span { @apply block h-[1.5px] w-6 rounded-full bg-current transition; }
-  .mobile-drawer { @apply pointer-events-none fixed inset-x-auto bottom-0 right-0 top-[76px] z-40 flex w-[min(64vw,250px)] translate-x-full border-l border-[#d5ebe9] bg-[#f6fbfb] px-5 py-8 opacity-0 shadow-[-12px_0_30px_rgba(15,138,165,.08)] transition-[transform,opacity] duration-500 ease-out md:hidden; }
-  .mobile-drawer.is-open { @apply pointer-events-auto translate-x-0 opacity-100; }
+  .mobile-drawer { @apply pointer-events-none fixed inset-x-auto bottom-0 right-0 top-[76px] z-40 flex w-[min(64vw,250px)] translate-x-full border-l border-[#d5ebe9] bg-[#f6fbfb] px-5 py-8 shadow-[-12px_0_30px_rgba(15,138,165,.08)] transition-transform duration-500 ease-out md:hidden; }
+  .mobile-drawer.is-open { @apply pointer-events-auto translate-x-0; }
   .mobile-drawer nav { @apply flex w-full flex-col; }
   .mobile-drawer a { @apply border-b border-[#dcefed] py-5 font-[Manrope] text-[22px] font-semibold tracking-[-0.02em] text-[#334849] transition hover:pl-1 hover:text-[#0f8aa5]; }
   .hero { @apply relative isolate min-h-[520px] overflow-hidden bg-[#fbfffe] py-14 sm:min-h-[560px] sm:py-20 lg:min-h-[590px] lg:py-24; }
