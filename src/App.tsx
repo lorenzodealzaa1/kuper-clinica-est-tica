@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Container } from './components/Container'
 import { FloatingWhatsApp } from './components/FloatingWhatsApp'
 import { site, whatsappLink } from './content/site'
@@ -99,12 +99,23 @@ function Check() { return <svg aria-hidden="true" viewBox="0 0 20 20"><path d="m
 
 function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  useEffect(() => {
+    if (!isMenuOpen) return
+
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setIsMenuOpen(false)
+    }
+
+    window.addEventListener('keydown', closeOnEscape)
+    return () => window.removeEventListener('keydown', closeOnEscape)
+  }, [isMenuOpen])
+
   return <><header className="site-header"><Container><div className="header-inner">
     <a className="brand" href="/" aria-label="KUPER Medicina Estética, inicio"><img alt="KUPER Medicina Estética" src="/images/brand/logo-white.png" /></a>
     <nav className="desktop-nav" aria-label="Navegación principal">{site.navigation.map((item) => <a href={item.href} key={item.href}>{item.label}</a>)}</nav>
     <a className="button button-primary header-cta" href={site.primaryAction.href} rel="noreferrer" target="_blank">WhatsApp</a>
     <button aria-controls="mobile-navigation" aria-expanded={isMenuOpen} aria-label={isMenuOpen ? 'Cerrar navegación' : 'Abrir navegación'} className="nav-toggle" onClick={() => setIsMenuOpen((open) => !open)} type="button"><span /><span /><span /></button>
-  </div></Container></header><div className={`mobile-drawer ${isMenuOpen ? 'is-open' : ''}`} id="mobile-navigation"><nav aria-label="Navegación móvil">{site.navigation.map((item) => <a href={item.href} key={item.href} onClick={() => setIsMenuOpen(false)}>{item.label}</a>)}</nav></div></>
+  </div></Container></header><div aria-hidden={!isMenuOpen} className={`mobile-drawer ${isMenuOpen ? 'is-open' : ''}`} id="mobile-navigation"><nav aria-label="Navegación móvil">{site.navigation.map((item) => <a href={item.href} key={item.href} onClick={() => setIsMenuOpen(false)} tabIndex={isMenuOpen ? 0 : -1}>{item.label}</a>)}</nav></div></>
 }
 
 function Footer() {
