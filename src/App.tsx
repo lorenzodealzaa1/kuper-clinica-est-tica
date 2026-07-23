@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { Container } from './components/Container'
 import { FloatingWhatsApp } from './components/FloatingWhatsApp'
 import { site, whatsappLink } from './content/site'
@@ -5,12 +6,12 @@ import { site, whatsappLink } from './content/site'
 type Service = { name: string; description: string; image?: string }
 
 const featuredServices: Service[] = [
-  { name: 'Botox', description: 'Una alternativa de medicina estética que se conversa y evalúa según cada caso.', image: '/images/services/botox-v2.png' },
-  { name: 'Relleno de labios', description: 'Un procedimiento que se planifica de manera personalizada luego de una valoración profesional.', image: '/images/services/relleno-labios.png' },
-  { name: 'Rinomodelación', description: 'Una opción de perfilado nasal sin cirugía que requiere evaluación individual.', image: '/images/services/rinomodelacion-v3.png' },
-  { name: 'HIFU', description: 'Tecnología disponible en la clínica; su indicación se define en consulta.', image: '/images/services/hifu.png' },
-  { name: 'Maderoterapia', description: 'Técnica corporal realizada con elementos de madera y planificada para cada persona.', image: '/images/services/maderoterapia-v2.png' },
-  { name: 'Masajes reductores', description: 'Sesiones corporales cuya planificación se conversa de manera personalizada.', image: '/images/services/masajes-reductores.png' },
+  { name: 'Botox', description: 'Aplicación de toxina botulínica para suavizar líneas de expresión en frente, entrecejo y contorno de ojos.', image: '/images/services/botox-v2.png' },
+  { name: 'Relleno de labios', description: 'Aplicación de ácido hialurónico para aportar definición, volumen o hidratación a los labios.', image: '/images/services/relleno-labios.png' },
+  { name: 'Rinomodelación', description: 'Perfilado nasal sin cirugía con ácido hialurónico para armonizar el contorno y los ángulos de la nariz.', image: '/images/services/rinomodelacion-v3.png' },
+  { name: 'HIFU', description: 'Tecnología de ultrasonido focalizado utilizada en protocolos de tensado facial y corporal.', image: '/images/services/hifu.png' },
+  { name: 'Maderoterapia', description: 'Masaje corporal con instrumentos de madera que acompaña protocolos de modelado y bienestar.', image: '/images/services/maderoterapia-v2.png' },
+  { name: 'Masajes reductores', description: 'Masaje manual focalizado en zonas corporales, integrado a protocolos de modelado corporal.', image: '/images/services/masajes-reductores.png' },
 ]
 
 const reviews = [
@@ -30,63 +31,63 @@ const serviceGroups: { title: string; services: Service[] }[] = [
     title: 'Medicina estética y consultas',
     services: [
       ...featuredServices.slice(0, 3),
-      { name: 'Tratamiento de arañitas con láser', description: 'Abordaje con tecnología láser sujeto a evaluación médica.' },
-      { name: 'Chip de la juventud', description: 'Consultá por esta opción y recibí orientación profesional.' },
-      { name: 'Hiperhidrosis en axilas', description: 'Consulta para conocer las alternativas de tratamiento disponibles.' },
-      { name: 'Hilos tensores', description: 'Procedimiento de medicina estética con indicación profesional individual.' },
-      { name: 'Blefarolfit', description: 'Consultá por esta alternativa y su valoración profesional.' },
-      { name: 'Extracción de quistes / verrugas', description: 'Consulta médica para valorar el abordaje correspondiente.' },
-      { name: 'Plasma rico en plaquetas', description: 'Procedimiento que requiere valoración e indicación profesional.' },
-      { name: 'Mesoterapia tensora en papada', description: 'Alternativa a evaluar en consulta médica.' },
-      { name: 'Mesoterapia corporal', description: 'Tratamiento corporal definido de manera individual.' },
-      { name: 'Mesoterapia capilar con Dermapen', description: 'Consulta para valorar indicación y plan de tratamiento.' },
-      { name: 'Mesoterapia facial', description: 'Procedimiento facial sujeto a valoración profesional.' },
-      { name: 'Radiesse bioestimulador de colágeno', description: 'Consultá por esta alternativa y su evaluación profesional.' },
-      { name: 'Consulta médica', description: 'Un espacio de valoración para orientar el tratamiento adecuado.' },
-      { name: 'Recetas médicas', description: 'Gestión sujeta a consulta y criterio profesional.' },
-      { name: 'Consulta virtual con nutricionista', description: 'Orientación nutricional en modalidad virtual.' },
+      { name: 'Tratamiento de arañitas con láser', description: 'Aplicación de láser sobre pequeños vasos superficiales visibles, especialmente en las piernas.' },
+      { name: 'Chip de la juventud', description: 'Tratamiento médico con implantes hormonales de liberación sostenida, indicado según criterio profesional.' },
+      { name: 'Hiperhidrosis en axilas', description: 'Aplicación de toxina botulínica en axilas para reducir temporalmente la sudoración excesiva.' },
+      { name: 'Hilos tensores', description: 'Colocación de hilos reabsorbibles dentro de protocolos de tensado y redefinición facial.' },
+      { name: 'Blefarolfit', description: 'Protocolo no quirúrgico enfocado en mejorar el aspecto de la zona periocular.' },
+      { name: 'Extracción de quistes / verrugas', description: 'Procedimiento médico para retirar lesiones cutáneas benignas, cuando corresponde.' },
+      { name: 'Plasma rico en plaquetas', description: 'Uso de una fracción concentrada de la propia sangre en protocolos de bioestimulación.' },
+      { name: 'Mesoterapia tensora en papada', description: 'Microinyecciones localizadas en el área submentoniana dentro de protocolos de perfilado.' },
+      { name: 'Mesoterapia corporal', description: 'Aplicación localizada de activos mediante microinyecciones dentro de protocolos corporales.' },
+      { name: 'Mesoterapia capilar con Dermapen', description: 'Aplicación de activos en el cuero cabelludo con microagujas para protocolos capilares.' },
+      { name: 'Mesoterapia facial', description: 'Microinyecciones superficiales de activos para protocolos de hidratación y revitalización facial.' },
+      { name: 'Radiesse bioestimulador de colágeno', description: 'Bioestimulador inyectable utilizado en protocolos de colágeno y contorno facial.' },
+      { name: 'Consulta médica', description: 'Encuentro con la Dra. para revisar tu caso, antecedentes y alternativas disponibles.' },
+      { name: 'Recetas médicas', description: 'Emisión o actualización de indicaciones médicas cuando la profesional lo considera adecuado.' },
+      { name: 'Consulta virtual con nutricionista', description: 'Orientación nutricional por videollamada para acompañar tus objetivos de bienestar.' },
     ],
   },
   {
     title: 'Tecnología facial y corporal',
     services: [
       featuredServices[3],
-      { name: 'Eliminación de tatuajes', description: 'Sesiones con tecnología láser cuya planificación se evalúa de forma individual.' },
-      { name: 'Hollywood Peel', description: 'Tratamiento facial con tecnología láser, sujeto a consulta previa.' },
-      { name: 'Pico Laser Despigmentante', description: 'Tecnología disponible para evaluación profesional de cada caso.' },
-      { name: 'HIFU 25D 360 Max', description: 'Tecnología HIFU disponible; consultá por su indicación.' },
-      { name: 'HIFU 7D', description: 'Tecnología HIFU disponible; consultá por su indicación.' },
-      { name: 'Luz pulsada', description: 'Tratamiento con luz pulsada sujeto a valoración previa.' },
-      { name: 'Máscara LED', description: 'Sesión de luz LED según el protocolo indicado.' },
-      { name: 'Presoterapia', description: 'Técnica complementaria a evaluar según cada caso.' },
-      { name: 'Ultracavitación', description: 'Tecnología corporal disponible con planificación individual.' },
-      { name: 'Radiofrecuencia corporal', description: 'Tecnología corporal a definir en consulta.' },
-      { name: 'Radiofrecuencia facial', description: 'Tecnología facial a definir en consulta.' },
-      { name: 'Vela Velvet Max', description: 'Tecnología corporal disponible para consulta y evaluación.' },
-      { name: 'Mio Up glúteos / abdomen', description: 'Tecnología corporal disponible para consulta y evaluación.' },
-      { name: 'Criolipólisis', description: 'Tratamiento corporal que requiere valoración profesional previa.' },
-      { name: 'Crioterapia facial', description: 'Protocolo facial a definir según necesidad y evaluación.' },
+      { name: 'Eliminación de tatuajes', description: 'Sesiones de láser que fragmentan las partículas de tinta presentes en la piel.' },
+      { name: 'Hollywood Peel', description: 'Protocolo facial que combina carbón activado y láser para renovar el aspecto de la piel.' },
+      { name: 'Pico Laser Despigmentante', description: 'Láser de pulsos ultracortos utilizado en protocolos para manchas y tono irregular.' },
+      { name: 'HIFU 25D 360 Max', description: 'Ultrasonido focalizado de alta intensidad para protocolos de tensado facial y corporal.' },
+      { name: 'HIFU 7D', description: 'Tecnología de ultrasonido focalizado con distintos cabezales para rostro y cuerpo.' },
+      { name: 'Luz pulsada', description: 'Luz de amplio espectro utilizada en protocolos para rojeces, pigmentación y depilación.' },
+      { name: 'Máscara LED', description: 'Fototerapia con luz LED incorporada a protocolos de cuidado y recuperación facial.' },
+      { name: 'Presoterapia', description: 'Compresión neumática secuencial que acompaña protocolos corporales y de bienestar.' },
+      { name: 'Ultracavitación', description: 'Tecnología de ultrasonido de baja frecuencia integrada a protocolos de modelado corporal.' },
+      { name: 'Radiofrecuencia corporal', description: 'Energía de radiofrecuencia que genera calor controlado en protocolos corporales.' },
+      { name: 'Radiofrecuencia facial', description: 'Energía de radiofrecuencia aplicada en protocolos de cuidado y tensado facial.' },
+      { name: 'Vela Velvet Max', description: 'Tecnología corporal que combina estímulos térmicos y mecánicos dentro de un protocolo.' },
+      { name: 'Mio Up glúteos / abdomen', description: 'Electroestimulación focalizada para trabajar glúteos o abdomen dentro de una sesión corporal.' },
+      { name: 'Criolipólisis', description: 'Tecnología de enfriamiento controlado aplicada en protocolos de modelado corporal.' },
+      { name: 'Crioterapia facial', description: 'Aplicación de frío controlado dentro de protocolos de cuidado y descongestión facial.' },
     ],
   },
   {
     title: 'Facial y bienestar corporal',
     services: [
       featuredServices[4], featuredServices[5],
-      { name: 'Masajes en general', description: 'Opciones de masaje para bienestar y relajación.' },
-      { name: 'Pulido de glúteos / piernas', description: 'Cuidado corporal enfocado en esas zonas.' },
-      { name: 'Exfoliación de espalda', description: 'Sesión de cuidado y renovación superficial de la piel de la espalda.' },
-      { name: 'Peeling', description: 'Tratamiento facial o corporal cuya modalidad se define en consulta.' },
-      { name: 'Dermaplaning facial', description: 'Procedimiento de exfoliación facial sujeto a valoración previa.' },
-      { name: 'Colágeno terapia', description: 'Consultá por esta alternativa y su valoración profesional.' },
-      { name: 'Limpieza facial profunda', description: 'Sesión de higiene y cuidado facial.' },
+      { name: 'Masajes en general', description: 'Masajes manuales orientados a la relajación, el descanso y el bienestar corporal.' },
+      { name: 'Pulido de glúteos / piernas', description: 'Exfoliación y pulido corporal focalizado en glúteos y piernas.' },
+      { name: 'Exfoliación de espalda', description: 'Limpieza y renovación superficial de la piel de la espalda.' },
+      { name: 'Peeling', description: 'Aplicación de activos exfoliantes para renovar la capa superficial de la piel.' },
+      { name: 'Dermaplaning facial', description: 'Exfoliación mecánica superficial que retira células muertas y vello fino del rostro.' },
+      { name: 'Colágeno terapia', description: 'Protocolos orientados a acompañar la producción de colágeno y la calidad de la piel.' },
+      { name: 'Limpieza facial profunda', description: 'Higiene facial con renovación superficial y extracción cuando corresponde.' },
     ],
   },
   {
     title: 'Mirada',
     services: [
-      { name: 'Laminado / perfilado de cejas', description: 'Servicio de diseño y ordenamiento de cejas.' },
-      { name: 'Perfilado / diseño de cejas', description: 'Diseño de cejas adaptado a cada rostro.' },
-      { name: 'Lifting de pestañas', description: 'Servicio estético para trabajar la curvatura natural de las pestañas.' },
+      { name: 'Laminado / perfilado de cejas', description: 'Ordena, peina y define la dirección de las cejas para un acabado más uniforme.' },
+      { name: 'Perfilado / diseño de cejas', description: 'Diseño y depilación de cejas para acompañar las proporciones naturales del rostro.' },
+      { name: 'Lifting de pestañas', description: 'Tratamiento que eleva y curva las pestañas naturales desde su base.' },
     ],
   },
 ]
@@ -97,16 +98,18 @@ function Arrow() { return <svg aria-hidden="true" viewBox="0 0 20 20"><path d="M
 function Check() { return <svg aria-hidden="true" viewBox="0 0 20 20"><path d="m4 10.5 3.3 3.2L16 5.8" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" /></svg> }
 
 function Header() {
-  return <header className="site-header"><Container><div className="header-inner">
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
+  return <><header className="site-header"><Container><div className="header-inner">
     <a className="brand" href="/" aria-label="KUPER Medicina Estética, inicio"><img alt="KUPER Medicina Estética" src="/images/brand/logo-white.png" /></a>
     <nav className="desktop-nav" aria-label="Navegación principal">{site.navigation.map((item) => <a href={item.href} key={item.href}>{item.label}</a>)}</nav>
     <a className="button button-primary header-cta" href={site.primaryAction.href} rel="noreferrer" target="_blank">WhatsApp</a>
-  </div></Container></header>
+    <button aria-controls="mobile-navigation" aria-expanded={isMenuOpen} aria-label={isMenuOpen ? 'Cerrar navegación' : 'Abrir navegación'} className="nav-toggle" onClick={() => setIsMenuOpen((open) => !open)} type="button"><span /><span /><span /></button>
+  </div></Container></header><div className={`mobile-drawer ${isMenuOpen ? 'is-open' : ''}`} id="mobile-navigation"><nav aria-label="Navegación móvil">{site.navigation.map((item) => <a href={item.href} key={item.href} onClick={() => setIsMenuOpen(false)}>{item.label}</a>)}</nav></div></>
 }
 
 function Footer() {
   return <footer className="footer"><Container><div className="footer-grid">
-    <div><p className="footer-brand">KUPER <span>medicina estética</span></p><p className="footer-intro">Medicina estética, tratamientos faciales, corporales y bienestar en Córdoba Capital.</p><p className="license">Dra. Eve Kuperstein · MP 37758</p></div>
+    <div><img alt="KUPER Medicina Estética" className="footer-logo" src="/images/brand/logo-white.png" /><p className="footer-intro">Medicina estética, tratamientos faciales, corporales y bienestar en Córdoba Capital.</p><p className="license">Dra. Eve Kuperstein · MP 37758</p></div>
     <div><p className="footer-title">Contacto</p><a href={site.contact.phoneHref}>{site.contact.phone}</a><a href={`mailto:${site.contact.email}`}>{site.contact.email}</a><a href={site.contact.mapUrl} rel="noreferrer" target="_blank">{site.contact.location}</a></div>
     <div><p className="footer-title">Horarios</p>{site.hours.map((hour) => <p key={hour}>{hour}</p>)}<a href={site.contact.instagramUrl} rel="noreferrer" target="_blank">Instagram</a></div>
   </div><div className="footer-bottom"><p>© {new Date().getFullYear()} KUPER Medicina Estética. Córdoba, Argentina.</p><a href="/servicios">Servicios de medicina estética en Córdoba</a></div></Container></footer>
@@ -126,7 +129,7 @@ function Home() {
 
       <section className="section services-preview" id="servicios"><Container><div className="section-intro"><div><h2>Servicios para acompañar tus objetivos.</h2><p>Conocé algunas de las alternativas disponibles en KUPER. Cada consulta se orienta de forma personalizada.</p></div><a className="text-link desktop-only" href="/servicios">Ver todos los servicios <Arrow /></a></div><div className="featured-grid">{featuredServices.map((service) => <ServiceCard image key={service.name} service={service} />)}</div><div className="mobile-center"><a className="button button-secondary" href="/servicios">Ver todos los servicios <Arrow /></a></div></Container></section>
 
-      <section className="section care-section" id="nosotros"><Container><div className="care-grid"><div className="care-images"><img alt="Recepción de KUPER Medicina Estética" src="/images/clinic/reception.jpg" /><img alt="Identidad visual de KUPER Medicina Estética en la clínica" src="/images/clinic/logo-wall.jpg" /></div><div className="care-copy"><h2>Una experiencia pensada para que te sientas bien atendida.</h2><p>La Dra. Eve Kuperstein y el equipo de KUPER acompañan cada consulta con una mirada profesional, cercana y detallista.</p><ul><li><Check /><span>Valoración profesional antes de avanzar.</span></li><li><Check /><span>Alternativas faciales, corporales y de bienestar.</span></li><li><Check /><span>Atención en Córdoba Capital.</span></li></ul><a className="text-link" href={site.primaryAction.href} rel="noreferrer" target="_blank">Hacer una consulta <Arrow /></a></div></div></Container></section>
+      <section className="section care-section" id="nosotros"><Container><div className="care-grid"><div className="care-images"><img alt="Recepción de KUPER Medicina Estética" src="/images/clinic/reception.jpg" /><img alt="Identidad visual de KUPER Medicina Estética en la clínica" src="/images/clinic/logo-wall.jpg" /></div><div className="care-copy"><h2>Una experiencia pensada para que te sientas bien atendida.</h2><p>La Dra. Eve Kuperstein y el equipo de KUPER acompañan cada consulta con una mirada profesional, cercana y detallista.</p><ul><li><Check /><span>Valoración profesional antes de avanzar.</span></li><li><Check /><span>Alternativas faciales, corporales y de bienestar.</span></li><li><Check /><span>Atención en Córdoba Capital.</span></li></ul><a className="button button-primary care-button" href={site.primaryAction.href} rel="noreferrer" target="_blank">Hacer una consulta <Arrow /></a></div></div></Container></section>
 
       <section className="section reviews-section" id="opiniones"><Container><div className="reviews-heading"><div><h2>Lo cuentan quienes ya eligieron KUPER.</h2><p>Opiniones reales de pacientes en Google.</p></div><div className="reviews-summary"><strong>5,0</strong><span aria-label="Cinco estrellas">★★★★★</span><small>251 opiniones en Google</small></div></div><div className="review-marquee" aria-label="Reseñas de pacientes"><div className="review-track">{[0, 1].map((set) => <div className="review-set" key={set}>{reviews.map((review) => <article className="review-card" key={`${set}-${review.name}`}><div className="review-card-top"><span className="review-avatar">{review.name.slice(0, 1)}</span><div><h3>{review.name}</h3><p className="review-stars" aria-label="Cinco estrellas">★★★★★ <span>{review.when}</span></p></div></div><blockquote>“{review.text}”</blockquote></article>)}</div>)}</div></div><div className="review-cta"><a className="button button-secondary" href={site.contact.reviewsUrl} rel="noreferrer" target="_blank">Ver todas las opiniones en Google <Arrow /></a></div></Container></section>
 
