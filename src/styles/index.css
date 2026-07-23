@@ -55,13 +55,26 @@ h1, h2, h3, p { margin: 0; }
   .care-copy li { @apply flex items-center gap-3 text-sm font-medium text-[#405657]; }
   .care-copy li svg { @apply h-5 w-5 shrink-0 text-[#0f8aa5]; }
   .care-copy .text-link { @apply mt-7; }
-  .reviews-section { @apply bg-[#f8fcfc]; }
-  .reviews-grid { @apply grid items-center gap-8 md:grid-cols-[1.25fr_.75fr]; }
-  .review-score { @apply flex items-center gap-5 rounded-2xl border border-[#cbe8e5] bg-white p-6; }
-  .review-score > span { @apply font-[Manrope] text-5xl font-bold tracking-[-0.06em] text-[#0f8aa5]; }
-  .stars { @apply text-lg tracking-[0.08em] text-[#0f8aa5]; }
-  .review-score strong { @apply mt-1 block font-[Manrope] text-sm; }
-  .review-score small { @apply mt-1 block text-xs leading-5 text-[#6d7d7e]; }
+  .reviews-section { @apply overflow-hidden bg-[#f8fcfc]; }
+  .reviews-heading { @apply flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between; }
+  .reviews-heading h2 { @apply font-[Manrope] text-[29px] font-bold leading-[1.15] tracking-[-0.03em] text-[#132129] sm:text-[36px]; }
+  .reviews-heading p { @apply mt-3 leading-7 text-[#5a6b6c]; }
+  .reviews-summary { @apply flex items-center gap-2 whitespace-nowrap; }
+  .reviews-summary strong { @apply font-[Manrope] text-3xl leading-none tracking-[-0.05em] text-[#0f8aa5]; }
+  .reviews-summary span, .review-stars { @apply text-[15px] tracking-[0.08em] text-[#edb51b]; }
+  .reviews-summary small { @apply text-xs font-medium text-[#627273]; }
+  .review-marquee { @apply mt-8 overflow-hidden py-1; mask-image: linear-gradient(to right, transparent, black 4%, black 96%, transparent); }
+  .review-track { @apply flex w-max; animation: reviews-scroll 165s linear infinite; will-change: transform; }
+  .review-set { @apply flex gap-4 pr-4; }
+  .review-marquee:hover .review-track { animation-play-state: paused; }
+  .review-card { @apply flex w-[340px] shrink-0 flex-col rounded-2xl border border-[#d5ecea] bg-white p-5 shadow-[0_8px_24px_rgba(15,138,165,0.06)] sm:w-[400px]; }
+  .review-card-top { @apply flex items-center gap-3; }
+  .review-avatar { @apply flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#dff5f3] font-[Manrope] font-bold text-[#087f96]; }
+  .review-card h3 { @apply font-[Manrope] text-[15px] font-bold text-[#203133]; }
+  .review-stars { @apply mt-1 text-[12px]; }
+  .review-stars span { @apply ml-2 text-[11px] font-medium tracking-normal text-[#758586]; }
+  .review-card blockquote { @apply mt-4 text-sm leading-6 text-[#4e6263]; }
+  .review-cta { @apply mt-8 text-center; }
   .contact-section { @apply bg-white; }
   .contact-card { @apply flex flex-col gap-7 overflow-hidden rounded-[28px] bg-[#0f8a9b] px-6 py-8 text-white sm:px-10 sm:py-10 md:flex-row md:items-center md:justify-between; }
   .contact-card h2 { @apply text-white; }
@@ -80,7 +93,7 @@ h1, h2, h3, p { margin: 0; }
   .footer-grid a { @apply transition hover:text-[#087f96]; }
   .footer-bottom { @apply mt-8 flex flex-col gap-2 border-t border-[#dbeeed] pt-5 text-xs text-[#718182] sm:flex-row sm:justify-between; }
   .footer-bottom a { @apply hover:text-[#087f96]; }
-  .floating-whatsapp { @apply fixed bottom-4 right-4 z-50 inline-flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] text-[#06371b] shadow-[0_8px_24px_rgba(0,0,0,.18)] transition hover:scale-105 hover:bg-[#36e681] sm:bottom-6 sm:right-6; }
+  .floating-whatsapp { @apply fixed bottom-4 right-4 z-50 inline-flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-[0_8px_24px_rgba(0,0,0,.18)] transition hover:scale-105 hover:bg-[#36e681] sm:bottom-6 sm:right-6; }
   .floating-whatsapp svg { @apply h-6 w-6; }
   .services-hero { @apply bg-[#f0fbfa] py-12 sm:py-16; }
   .services-hero h1 { @apply mt-6; }
@@ -105,3 +118,8 @@ h1, h2, h3, p { margin: 0; }
   .social-card-content p { @apply mt-1 font-[Manrope] text-[28px] font-semibold leading-tight tracking-[-0.02em] text-[#0f8aa5]; }
 }
 @media (max-width: 767px) { .desktop-only { display: none; } .section-intro { align-items: flex-start; } }
+
+@keyframes reviews-scroll {
+  from { transform: translateX(-50%); }
+  to { transform: translateX(0); }
+}
