@@ -71,7 +71,7 @@ h1, h2, h3, p { margin: 0; }
   .reviews-summary span, .review-stars { @apply text-[15px] tracking-[0.08em] text-[#edb51b]; }
   .reviews-summary small { @apply text-xs font-medium text-[#627273]; }
   .review-marquee { @apply mt-8 overflow-hidden py-1; mask-image: linear-gradient(to right, transparent, black 4%, black 96%, transparent); }
-  .review-track { @apply flex w-max; animation: reviews-scroll 165s linear infinite; will-change: transform; }
+  .review-track { @apply flex w-max; animation: reviews-scroll 110s linear infinite; will-change: transform; }
   .review-set { @apply flex gap-4 pr-4; }
   .review-marquee:hover .review-track { animation-play-state: paused; }
   .review-card { @apply flex w-[340px] shrink-0 flex-col rounded-2xl border border-[#d5ecea] bg-white p-5 shadow-[0_8px_24px_rgba(15,138,165,0.06)] sm:w-[400px]; }
@@ -128,6 +128,10 @@ h1, h2, h3, p { margin: 0; }
 @media (max-width: 639px) {
   .care-images { grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: stretch; }
   .care-images img:first-child, .care-images img:last-child { aspect-ratio: 1 / 1; margin-bottom: 0; }
+  .review-marquee { margin-inline: -16px; mask-image: none; }
+  .review-set { gap: 12px; padding-right: 12px; }
+  .review-card { width: calc(100vw - 32px); aspect-ratio: 1 / 1; min-height: 0; padding: 16px; }
+  .review-card blockquote { margin-top: 12px; font-size: 13px; line-height: 1.42; overflow-y: auto; padding-right: 2px; }
 }
 
 @keyframes reviews-scroll {

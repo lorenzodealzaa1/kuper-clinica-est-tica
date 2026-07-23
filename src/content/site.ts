@@ -27,7 +27,11 @@ export const site = {
     whatsappUrl: whatsappLink('Hola! Vengo de la página web, quería consultar sobre...'),
   },
   hours: [
-    'Lunes a viernes: 9 a 20 h',
+    'Lunes: 9 a 20 h',
+    'Martes: 9 a 20 h',
+    'Miércoles: 9 a 20 h',
+    'Jueves: 9 a 20 h',
+    'Viernes: 9 a 20 h',
     'Sábados: 9 a 13 h',
     'Domingos: cerrado',
   ],
